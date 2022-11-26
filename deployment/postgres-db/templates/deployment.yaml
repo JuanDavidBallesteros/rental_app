@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "go_app.fullname" . }}
+  name: {{ include "postgres-db.fullname" . }}
   labels:
-    {{- include "go_app.labels" . | nindent 4 }}
+    {{- include "postgres-db.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "go_app.selectorLabels" . | nindent 6 }}
+      {{- include "postgres-db.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "go_app.selectorLabels" . | nindent 8 }}
+        {{- include "postgres-db.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "go_app.serviceAccountName" . }}
+      serviceAccountName: {{ include "postgres-db.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -33,20 +33,12 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.port }}
           ports:
-            - name: http
-              containerPort: "{{ .Values.port }}"
+            - name: postgres
+              containerPort: 5432
               protocol: TCP
-          {{- end }}
-          {{- if .Values.envars }}
-          env:
-            - name: IS_CONSUMER
-              value: "1"
-          {{- end }}
-          envFrom:
-          - secretRef:
-              name: "{{ .Values.secretName }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-
+          envFrom:
+          - secretRef:
+              name: "{{ .Values.secretName }}"  

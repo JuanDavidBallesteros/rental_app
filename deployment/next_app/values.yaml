@@ -4,15 +4,19 @@
 
 replicaCount: 1
 
+# New variables
+secretName: frontend
+port: 3000
+
 image:
-  repository: nginx
+  repository: covapp.azurecr.io/frontend
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: "frontend"
+fullnameOverride: "frontend"
 
 serviceAccount:
   # Specifies whether a service account should be created

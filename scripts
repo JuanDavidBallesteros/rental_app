@@ -1,2 +1,27 @@
 login docker images repo
     docker login covapp.azurecr.io -u 00000000-0000-0000-0000-000000000000 -p $TOKEN
+
+
+Improvements
+
+add 
+    livenessProbe:
+        httpGet:
+            path: /
+            port: http
+    readinessProbe:
+        httpGet:
+            path: /
+            port: http
+
+
+Kubectl
+
+    kubectl get pods --watch --output-watch-events -A --> ver eventos en los pods
+    kubectl get events -w --field-selector=type=Warning -A  --> filtar eventos 
+    -A todos los namespaces
+    kubectl wait --for=condition=ready pod -l foo=bar --> validar si se despliegua bien si no se cumple da timeout
+    
+    kubectl set env pod/<pod_id> --list
+
+    kubectl top pods --sort-by='memory' --> uso de recursos pod ordenados 

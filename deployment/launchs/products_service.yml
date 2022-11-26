@@ -1,20 +1,22 @@
-# Default values for postgres_db.
+# Default values for python_app.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
-secretName: auth
+# New variables
+secretName: product
+port: 8001
 
 image:
-  repository: postgres
+  repository: covapp.azurecr.io/products_service
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "14.1-alpine3.15"
+  tag: "latest"
 
 imagePullSecrets: []
-nameOverride: "auth-db"
-fullnameOverride: "auth-db"
+nameOverride: "products-service"
+fullnameOverride: "products-service"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -40,7 +42,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 5432
+  port: 80
 
 ingress:
   enabled: false

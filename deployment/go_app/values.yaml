@@ -4,6 +4,11 @@
 
 replicaCount: 1
 
+# New variables
+secretName: search
+port: false
+envars: false
+
 image:
   repository: nginx
   pullPolicy: IfNotPresent

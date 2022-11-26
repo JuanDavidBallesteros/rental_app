@@ -4,6 +4,10 @@
 
 replicaCount: 1
 
+# New variables
+secretName: auth
+port: 8000
+
 image:
   repository: nginx
   pullPolicy: IfNotPresent

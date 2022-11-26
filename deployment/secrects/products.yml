@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: product
+type: Opaque
+stringData:
+  FASTAPI_PORT: "80" # "8001"
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_HOST: products-db
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: products
+  RABBITMQ_URL: amqps://YOUR_AMPQ_KEY_URL_GOES_HERE
+  DATABASE_URL: postgresql+asyncpg://postgres:postgres@$(PRODUCTS_DB_SERVICE_HOST):5432/postgres
+  AUTH_SERVICE_BASE_URL: http://$(AUTH_SERVICE_SERVICE_HOST)

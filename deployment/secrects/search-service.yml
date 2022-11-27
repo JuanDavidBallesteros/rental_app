@@ -4,6 +4,6 @@ metadata:
   name: search-svc
 type: Opaque
 stringData:
-  MONGO_INITDB_ROOT_USERNAME: root
-  MONGO_INITDB_ROOT_PASSWORD: root
-  MONGO_INITDB_DATABASE: test
+  MONGO_URL: mongodb://root:root@search-db:27017
+  RABBITMQ_CONNECTION_URL: amqps://ynoocxhb:sOXZG6xEDo1tNtJBszctir1cW9PARTa5@beaver.rmq.cloudamqp.com/ynoocxhb
+  SEARCH_SERVICE_PORT: "9000"

@@ -6,7 +6,7 @@ replicaCount: 1
 
 
 # New variables
-secretName: searchSVC
+secretName: search-svc
 port: 9000
 envars: false
 
@@ -16,7 +16,7 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
-imagePullSecrets: []
+imagePullSecrets: [{ name: covapp}]
 nameOverride: "search-service"
 fullnameOverride: "search-service"
 

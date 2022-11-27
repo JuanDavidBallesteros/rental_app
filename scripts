@@ -25,3 +25,10 @@ Kubectl
     kubectl set env pod/<pod_id> --list
 
     kubectl top pods --sort-by='memory' --> uso de recursos pod ordenados 
+
+
+    $ kubectl describe pod podname
+
+    $ kubect logs podname –all-containers
+
+    $ kubectl get events --field-selector involvedObject.name=podname

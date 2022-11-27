@@ -1,22 +1,24 @@
-# Default values for python_app.
+# Default values for go_app.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
+
 # New variables
-secretName: auth
-port: 8000
+secretName: search-svc
+port: false
+envars: true
 
 image:
-  repository: covapp.azurecr.io/auth_service
+  repository: covapp.azurecr.io/serach_service
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
 imagePullSecrets: [{ name: covapp}]
-nameOverride: "auth-service"
-fullnameOverride: "auth-service"
+nameOverride: "search-consumer"
+fullnameOverride: "search-consumer"
 
 serviceAccount:
   # Specifies whether a service account should be created

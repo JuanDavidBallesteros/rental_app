@@ -30,6 +30,7 @@ echo "Creating frontend services...\n"
 
 helm install frontend --values ./launchs/frontend_service.yml ./next-app
 
+
 # helm install <service_name> --values ./launchs/auth_db.yml  ./postgres_db 
 
 #kubectl create secret docker-registry covapp --docker-server covapp.azurecr.io --docker-username c74dcb48-3455-40ae-8ad9-47fe3d48aa4d --docker-password 3162823639Mio. --docker-email c74dcb48-3455-40ae-8ad9-47fe3d48aa4d

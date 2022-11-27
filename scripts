@@ -32,3 +32,11 @@ Kubectl
     $ kubect logs podname –all-containers
 
     $ kubectl get events --field-selector involvedObject.name=podname
+
+    minikube addons enable ingress
+
+    kubectl exec --stdin --tty pod_name -- /bin/bash
+
+
+    CRD --> Custom Resources Definition Le enseño a kubernetes como manejar recursos custom
+    

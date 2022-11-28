@@ -43,11 +43,10 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-          #This is the path in the container on which the mounting will take place.
             - mountPath: /data/db
-              name: db  # Punto de referencia a los volumenes declarados abajo (Nombre)
+              name: db 
           #  - mountPath: /data/configdb
-          #    name : configdb   # Punto de referencia a los volumenes declarados abajo (Nombre)
+          #    name : configdb  
       volumes:
         - name: db # Volumen de almacenamiento
           persistentVolumeClaim:

@@ -7,10 +7,21 @@ echo "Creating secrects...\n"
 kubectl apply -f ./secrects
 
 echo "Creating volumes...\n"
+read -p "It's a local deployment: [type 'yes' or 'no']" deploymentType
 
-kubectl apply -f ./volumesConfigs
+kubectl apply -f ./volumesAzure
 
 echo "Creating services...\n"
+
+read -p 'docker-registry: ' registry
+read -p 'docker-server: ' server
+read -p 'docker-username: ' username
+read -sp 'docker-password: ' password
+read -p 'docker-email: ' email
+
+echo
+kubectl create secret docker-registry $registry --docker-server=$server --docker-username=$username --docker-password=$password --docker-email=$email
+echo
 
 echo "Creating dbs...\n"
 
@@ -29,6 +40,15 @@ helm install search-service --values ./launchs/search_service.yml ./go-app
 echo "Creating frontend services...\n"
 
 helm install frontend --values ./launchs/frontend_service.yml ./next-app
+
+echo "Creating monitoring...\n"
+
+kubectl apply --server-side -f manifests/setup
+kubectl wait \
+	--for condition=Established \
+	--all CustomResourceDefinition \
+	--namespace=monitoring
+kubectl apply -f manifests/
 
 
 # helm install <service_name> --values ./launchs/auth_db.yml  ./postgres_db 

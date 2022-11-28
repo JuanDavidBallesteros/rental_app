@@ -92,7 +92,7 @@ func main() {
 
 		router.Use(mux.CORSMethodMiddleware(router))
 
-		router.HandleFunc("/search", SearchHandler).Methods("GET")
+		router.HandleFunc("/api/search/search", SearchHandler).Methods("GET")
 
 		http.ListenAndServe(":9000", handlers.CORS(
 			handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),

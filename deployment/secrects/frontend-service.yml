@@ -4,6 +4,6 @@ metadata:
   name: frontend
 type: Opaque
 stringData:
-  NEXT_PUBLIC_AUTH_SERVICE_BASE_URL: http://$(AUTH_SERVICE_SERVICE_HOST)
-  NEXT_PUBLIC_PRODUCT_SERVICE_BASE_URL: http://$(PRODUCT_SERVICE_SERVICE_HOST)
-  NEXT_PUBLIC_SEARCH_SERVICE_BASE_URL: http://$(SEARCH_SERVICE_SERVICE_HOST)
+  NEXT_PUBLIC_AUTH_SERVICE_BASE_URL: http://covachapp.juanballesteros.engineer/api/auth
+  NEXT_PUBLIC_PRODUCT_SERVICE_BASE_URL: http://covachapp.juanballesteros.engineer/api/product
+  NEXT_PUBLIC_SEARCH_SERVICE_BASE_URL: http://covachapp.juanballesteros.engineer/api/search

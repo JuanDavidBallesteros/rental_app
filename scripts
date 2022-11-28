@@ -39,4 +39,6 @@ Kubectl
 
 
     CRD --> Custom Resources Definition Le enseño a kubernetes como manejar recursos custom
-    
+
+port forwarding localhost
+    k -n monitoring port-forward grafana-7cc74b46b5-xt229 3000:3000

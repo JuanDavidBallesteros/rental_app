@@ -19,6 +19,8 @@ origins = [
     "https://localhost.tiangolo.com",
     "http://localhost",
     "http://localhost:8080",
+    "http://covachapp.juanballesteros.engineer",
+    "http://20.127.254.74/"
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -44,7 +46,7 @@ def publish_product(product: Product):
         log.info("Published to RabbitMQ")
 
 
-@app.post('/products', status_code=201)
+@app.post('/api/product/products', status_code=201)
 async def create_product(
     product: ProductCreateSchema,
     background_tasks: BackgroundTasks,
@@ -72,7 +74,7 @@ async def create_product(
     return product_obj
 
 
-@app.get('/products')
+@app.get('/api/product/products')
 async def get_products(session: AsyncSession = Depends(get_session)):
     stmt = select(Product).order_by(Product.id)
     products = await session.execute(stmt)

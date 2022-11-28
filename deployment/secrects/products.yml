@@ -11,4 +11,4 @@ stringData:
   POSTGRES_DB: products
   RABBITMQ_URL: amqps://ynoocxhb:sOXZG6xEDo1tNtJBszctir1cW9PARTa5@beaver.rmq.cloudamqp.com/ynoocxhb
   DATABASE_URL: postgresql+asyncpg://postgres:postgres@$(PRODUCTS_DB_SERVICE_HOST):5432/postgres
-  AUTH_SERVICE_BASE_URL: http://$(AUTH_SERVICE_SERVICE_HOST)
+  AUTH_SERVICE_BASE_URL: http://$AUTH_SERVICE_SERVICE_HOST

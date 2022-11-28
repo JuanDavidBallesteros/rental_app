@@ -12,7 +12,7 @@ envars: true
 
 image:
   repository: covapp.azurecr.io/serach_service
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 

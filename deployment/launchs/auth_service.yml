@@ -10,7 +10,7 @@ port: 8000
 
 image:
   repository: covapp.azurecr.io/auth_service
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 

@@ -41,6 +41,9 @@ echo "Creating frontend services...\n"
 
 helm install frontend --values ./launchs/frontend_service.yml ./next-app
 
+#helm install ingress-nginx ingress-nginx/ingress-nginx \
+#  --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-health-probe-request-path"=/
+
 echo "Creating monitoring...\n"
 
 kubectl apply --server-side -f manifests/setup

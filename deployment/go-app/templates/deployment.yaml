@@ -47,6 +47,7 @@ spec:
           envFrom:
           - secretRef:
               name: "{{ .Values.secretName }}"
+          {{- if .Values.healthCheck }}
           livenessProbe:
             httpGet:
               path: /api/search/ping
@@ -55,5 +56,6 @@ spec:
             httpGet:
               path: /api/search/ping
               port: "{{ .Values.portName }}"
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

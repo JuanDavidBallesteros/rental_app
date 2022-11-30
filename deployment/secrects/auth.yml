@@ -4,7 +4,7 @@ metadata:
   name: auth
 type: Opaque
 stringData:
-  DJANGO_PORT: "80" # 8000
+  DJANGO_PORT: "8000" # 8000
   POSTGRES_HOST: auth-db.default.svc.cluster.local
   POSTGRES_PORT: "5432"
   POSTGRES_USER: postgres

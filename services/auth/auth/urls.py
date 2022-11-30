@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from rest_framework_simplejwt.views import (
@@ -12,6 +13,7 @@ from rest_framework_simplejwt.views import (
 
 from core.urls import router
 
+@api_view(['GET'])
 def ping(self):
     content = {'message': 'OK'}
     return Response(content, status=status.HTTP_200_OK)

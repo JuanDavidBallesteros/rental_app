@@ -55,3 +55,8 @@ Desafios
     Implementación del ingress 
         Para tener una IP publica directa y hacer reverse-proxy es necesario implemntar el application gateway
         Luego error 502 -> cada servicio necesita health checks --> liveness y readinessProbe
+    livenessProbe error de tipeo --> al revisar los logs
+    paths quemados en el codigo
+
+
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY5OTI3NTc2LCJpYXQiOjE2Njk4NDExNzYsImp0aSI6IjQxNWE1YWRmOGU4NzQ1ZWQ5MzBkYmJhOTk2YmZmOTNjIiwidXNlcl9pZCI6Mn0.ttSsjHGVQm_kEwei07jMZiuv1P1yrIjcm64v7mVSWus"  http://auth-service.default.svc.cluster.local/api/auth/api/externalauth

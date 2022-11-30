@@ -10,6 +10,7 @@ secretName: search-svc
 port: 9000
 portName: searchsvc
 envars: false
+healthCheck: true
 
 image:
   repository: covapp.azurecr.io/serach_service

@@ -80,6 +80,6 @@ async def get_products(session: AsyncSession = Depends(get_session)):
     products = await session.execute(stmt)
     return products.scalars().all()
 
-@app.get('/api/product/ping', status_code=200)
-async def ping():
+@app.get('/api/product/ping')
+def ping():
     return {"message": "OK"}

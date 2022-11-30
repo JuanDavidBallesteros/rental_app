@@ -13,7 +13,7 @@ def decode_token(token: str) -> dict:
     This function is used to decode the token.
     """
     response = requests.get(
-        f"{get_settings().auth_service_base_url}/api/externalauth/",
+        f"{get_settings().auth_service_base_url}/api/auth/api/externalauth/",
         headers={"Authorization": f"Bearer {token}"},
     )
     if response.status_code == 200:

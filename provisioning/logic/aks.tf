@@ -8,7 +8,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   
   ingress_application_gateway {
       gateway_name = "aks-covachapp-ingress"
-      subnet_cidr = "172.18.0.0/16"
+      subnet_cidr = "10.225.0.0/16"
     }
 
   default_node_pool {

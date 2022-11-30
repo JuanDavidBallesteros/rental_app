@@ -8,6 +8,7 @@ replicaCount: 1
 # New variables
 secretName: search-svc
 port: 9000
+portName: searchsvc
 envars: false
 
 image:
@@ -47,25 +48,19 @@ service:
   port: 80
 
 ingress:
-  enabled: false
-  className: "nginx"
+  enabled: true
+  className: ""
   annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
+    kubernetes.io/ingress.class: azure/application-gateway
+    # nginx.ingress.kubernetes.io/use-regex: "true"
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: covachapp.juanballesteros.engineer
+    - host: covachapp.juanballesteros.engineer 
       paths:
         - path: /api/search
           pathType: Prefix
-
-  #  - path: /api/search
-  #          pathType: Prefix
-  #          backend:
-  #            service:
-  #              name: search-service
-  #              port: 
-  #                number: 80
+          
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

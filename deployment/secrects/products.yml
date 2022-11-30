@@ -6,9 +6,9 @@ type: Opaque
 stringData:
   FASTAPI_PORT: "80" # "8001"
   POSTGRES_PASSWORD: postgres
-  POSTGRES_HOST: products-db
+  POSTGRES_HOST: products-db.default.svc.cluster.local
   POSTGRES_PORT: "5432"
   POSTGRES_DB: products
   RABBITMQ_URL: amqps://ynoocxhb:sOXZG6xEDo1tNtJBszctir1cW9PARTa5@beaver.rmq.cloudamqp.com/ynoocxhb
-  DATABASE_URL: postgresql+asyncpg://postgres:postgres@$(PRODUCTS_DB_SERVICE_HOST):5432/postgres
-  AUTH_SERVICE_BASE_URL: http://$AUTH_SERVICE_SERVICE_HOST
+  DATABASE_URL: postgresql+asyncpg://postgres:postgres@products-db.default.svc.cluster.local:5432/postgres
+  AUTH_SERVICE_BASE_URL: http://auth-service.default.svc.cluster.local

@@ -6,6 +6,7 @@ replicaCount: 1
 
 # New variables
 secretName: auth
+healthcheckPath: /
 port: 8000
 
 image:

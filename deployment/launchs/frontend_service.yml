@@ -41,12 +41,12 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: LoadBalancer
+  type: ClusterIP
   port: 80
 
 ingress:
   enabled: true
-  className: "nginx"
+  className: ""
   annotations: 
     kubernetes.io/ingress.class: azure/application-gateway
     #nginx.ingress.kubernetes.io/use-regex: "true"

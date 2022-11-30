@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
 
+from rest_framework import status
+from rest_framework.response import Response
+
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -9,8 +12,13 @@ from rest_framework_simplejwt.views import (
 
 from core.urls import router
 
+def ping(self):
+    content = {'message': 'OK'}
+    return Response(content, status=status.HTTP_200_OK)
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api/auth/ping/", ping),
     path("api/auth/admin/", admin.site.urls),
     path("api/auth/api/", include(router.urls)),
     path("api/auth/api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),

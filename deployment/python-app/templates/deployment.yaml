@@ -40,5 +40,13 @@ spec:
           envFrom:
           - secretRef:
               name: "{{ .Values.secretName }}"
+          livenessProbe:
+            httpGet:
+              path: "{{ .Values.healthcheckPath }}" 
+              port: http
+          readinessProbe:
+            httpGet:
+              path: "{{ .Values.healthcheckPath }}"
+              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

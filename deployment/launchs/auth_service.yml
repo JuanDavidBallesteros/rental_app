@@ -6,6 +6,7 @@ replicaCount: 1
 
 # New variables
 secretName: auth
+healthcheckPath: /api/auth/ping
 port: 8000
 
 image:
@@ -45,16 +46,17 @@ service:
   port: 80
 
 ingress:
-  enabled: false
-  className: "nginx"
+  enabled: true
+  className: ""
   annotations: 
-    nginx.ingress.kubernetes.io/use-regex: "true"
+    kubernetes.io/ingress.class: azure/application-gateway
+    # nginx.ingress.kubernetes.io/use-regex: "true"
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: auth.juanballesteros.engineer
+    - host: covachapp.juanballesteros.engineer
       paths:
-        - path: /api/auth*
+        - path: /api/auth
           pathType: Prefix
 
   tls: []

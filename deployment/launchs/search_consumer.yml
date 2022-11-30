@@ -8,6 +8,7 @@ replicaCount: 1
 # New variables
 secretName: search-svc
 port: false
+portName: http
 envars: true
 
 image:

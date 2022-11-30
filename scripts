@@ -42,7 +42,16 @@ Kubectl
 
 port forwarding localhost
     k -n monitoring port-forward grafana-7cc74b46b5-xt229 3000:3000
+    k -n jenkins port-forward jenkins-0 8080:8080
 
+    
 
 helm install ingress-nginx ingress-nginx/ingress-nginx \
   --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-health-probe-request-path"=/
+
+
+
+Desafios 
+    Implementación del ingress 
+        Para tener una IP publica directa y hacer reverse-proxy es necesario implemntar el application gateway
+        Luego error 502 -> cada servicio necesita health checks --> liveness y readinessProbe

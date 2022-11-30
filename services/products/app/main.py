@@ -79,3 +79,7 @@ async def get_products(session: AsyncSession = Depends(get_session)):
     stmt = select(Product).order_by(Product.id)
     products = await session.execute(stmt)
     return products.scalars().all()
+
+@app.get('/api/product/ping', status_code=200)
+async def ping():
+    return {"message": "OK"}

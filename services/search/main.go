@@ -68,8 +68,26 @@ func SearchHandler(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+	fmt.Println("cursor: ", cursor)
+	fmt.Println("err: ", err)
+
+	fmt.Println("Results: ", results)
+	fmt.Println("Response: ", response)
 	json.NewEncoder(response).Encode(results)
 
+}
+
+func handleRequest(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	resp := make(map[string]string)
+	resp["message"] = "Status OK"
+	jsonResp, err := json.Marshal(resp)
+	if err != nil {
+		fmt.Println("Error happened in JSON marshal. Err: %s", err)
+	}
+	w.Write(jsonResp)
+	return
 }
 
 func main() {
@@ -93,6 +111,7 @@ func main() {
 		router.Use(mux.CORSMethodMiddleware(router))
 
 		router.HandleFunc("/api/search/search", SearchHandler).Methods("GET")
+		router.HandleFunc("/api/search/ping", handleRequest).Methods("GET")
 
 		http.ListenAndServe(":9000", handlers.CORS(
 			handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),

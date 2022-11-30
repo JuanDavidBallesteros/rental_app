@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if .Values.port }}
           ports:
-            - name: http
+            - name: "{{ .Values.portName }}"
               containerPort: {{ .Values.port }}
               protocol: TCP
           {{- end }}
@@ -47,5 +47,13 @@ spec:
           envFrom:
           - secretRef:
               name: "{{ .Values.secretName }}"
+          livenessProbe:
+            httpGet:
+              path: /api/search/ping
+              port: "{{ .Values.portName }}"
+          readinessProbe:
+            httpGet:
+              path: /api/search/ping
+              port: "{{ .Values.portName }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

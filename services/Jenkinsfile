@@ -16,14 +16,20 @@ podTemplate(label: 'build', containers: [
             lsb-release
             '''
         sh 'mkdir -p /etc/apt/keyrings'
-        sh 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg'
+        sh 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg'
         sh '''echo \
 "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+$(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 '''
         sh 'apt-get update'
         sh 'apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin'
-        sh 'docker version'
+        sh 'mkdir build && cd build'
+        withCredentials([usernamePassword(credentialsId: '84bffb7c-a3bf-44f4-9471-977870eeed88', 
+          passwordVariable: 'pass', usernameVariable: 'user')]){
+            sh label: 'Login to Github', script: '''
+git clone https://$user:$pass@github.com/JuanDavidBallesteros/rental_app.git . '''
+          }
+        sh 'docker build -t auth .'
       }        
     }  
   }

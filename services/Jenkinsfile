@@ -7,8 +7,6 @@ podTemplate(yaml: '''
         image: docker:latest
         command:
         - cat
-        args:
-        - 99d
         volumeMounts:
             - mountPath: /var/run/docker.sock
               name: db 

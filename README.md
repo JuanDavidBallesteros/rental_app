@@ -35,7 +35,7 @@ For monitoring and alerting we proposed to use Prometheus and Grafana, there are
 
 ### CI/CD
 
-Finally, we create a Jenkins service to automate and run tests, this service is triggered by the repository hooks.
+Finally, we create a Jenkins service to automate and run tests, this service is triggered by the repository hooks. The pipeline is configured by a Jenkinsfile stored in the repository.
 
 ## Execute
 
@@ -104,8 +104,9 @@ Finally, the last upgrade is to move the authoritative DNS to Azure and implemen
 │   └── search<br>
 └── src (Readme resources)<br>
 
-## Tests
+## Screenshots
 
+### Application
 #### Access
 
 ![Access the App](./src/Access.png)
@@ -121,4 +122,40 @@ Finally, the last upgrade is to move the authoritative DNS to Azure and implemen
 #### Search
 
 ![Product Search](./src/ProductSearch.png)
+
+
+### CI/CD
+#### GitHub Hook
+
+![GitHub](./src/jenkins01.png)
+
+#### Jenkins Job
+
+Job terminated successfully using Jenkinsfile
+![GitHub](./src/jenkins05.png)
+![GitHub](./src/jenkins08.png)
+
+#### Azure ACR
+
+Here you can see the image uploaded to the container repository
+![GitHub](./src/jenkins09.png)
+
+### Monitoring
+#### Grafana 
+![Grafana 1](./src/grafana-0.png)
+
+#### Dashboard compute resources
+![Grafana 2](./src/grafana-2.png)
+![Grafana 3](./src/grafana-3.png)
+![Grafana 7](./src/grafana-7.png)
+
+#### CPU Alerting 
+Metric
+![Grafana 4](./src/grafana-4.png)
+
+Alert
+![Grafana 5](./src/grafana-5.png)
+
+Notification
+![Grafana 6](./src/grafana-6.png)
 

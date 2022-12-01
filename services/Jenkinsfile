@@ -1,11 +1,24 @@
-podTemplate(label: 'build', containers: [
+podTemplate(label: 'build',
+  yaml: '''
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+    name: jenkins-test
+    spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+        requests:
+        storage: 2Gi
+''',
+  containers: [
     containerTemplate(name: 'jenkins-test', image: 'docker', command: 'cat', ttyEnabled: true)
   ],
   volumes: [
-    persistentVolumeClaim(mountPath: '/var/run/docker.sock', claimName: 'jenkins-pvc', readOnly: false),
-  ]
+    persistentVolumeClaim(mountPath: '/var/run/docker.sock', claimName: 'jenkins-test', readOnly: false),
+  ],
   ) {
-  node('build') {
+  node(POD_LABEL) {
     stage('Build') {
       container('docker') {
         stage('Building') {

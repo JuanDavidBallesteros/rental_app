@@ -7,7 +7,7 @@ podTemplate(label: 'build', containers: [
   ) {
     node('build') {
       container('docker') {
-        /* sh 'rc-service {service-name} start' */
+        sh 'rc-service docker.service start'
         sh 'docker version'
       }        
     }  

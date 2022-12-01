@@ -1,10 +1,37 @@
-podTemplate(label: 'build', containers: [
+podTemplate(yaml: '''
+    apiVersion: v1
+    kind: Pod
+    spec:
+      containers:
+      - name: docker
+        image: docker:latest
+''') {
+  node(POD_LABEL) {
+    stage('Build') {
+      container('docker') {
+        stage('Building') {
+          sh 'apk update'  
+          sh 'apk add git'
+          withCredentials([usernamePassword(credentialsId: '84bffb7c-a3bf-44f4-9471-977870eeed88', 
+          passwordVariable: 'pass', usernameVariable: 'user')]){
+            sh label: 'Login to Github', script: '''
+sh git clone https://$user:$pass@github.com/JuanDavidBallesteros/rental_app.git . '''
+          }
+          sh 'docker build -t auth .'
+        }
+        
+      }
+    }
+
+  }
+}
+/* podTemplate(label: 'build', containers: [
     containerTemplate(name: 'jenkins-test', image: 'ubuntu', command: 'cat', ttyEnabled: true )
     
-  ]/* ,
+  ],
   volumes: [
     persistentVolumeClaim(mountPath: '/var/run/docker.sock', claimName: 'jenkins-pvc', readOnly: false),
-  ] */
+  ]
   ) {
   node('build') {
     stage('Build') {
@@ -40,4 +67,4 @@ git clone https://$user:$pass@github.com/JuanDavidBallesteros/rental_app.git . '
   }
 }
 
-
+ */

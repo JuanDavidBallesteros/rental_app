@@ -14,13 +14,17 @@ pipeline {
     stages {
         
         stage('Example Build') {
-            agent { docker 'python:latest' } 
+            agent { 
+                docker 'python:latest'
+                label 'my-defined-label'
+                args  '-p 8001:8001' 
+            } 
             steps {
-                ls 
+                echo ls 
             }
         }
         stage('Clone repository') { 
-            agent { docker 'python:latest' } 
+            agent any
             steps { 
                 script{
                     checkout scm

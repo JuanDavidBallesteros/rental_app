@@ -8,8 +8,8 @@ podTemplate(label: 'build', containers: [
     node('build') {
       container('ubuntu') {
         sh 'apt update'  
-        sh 'apt-get isntall -y git'
-        sh ''' apt-get install -y \
+        sh 'apt-get install -y git'
+        sh '''apt-get install -y \
             ca-certificates \
             curl \
             gnupg \

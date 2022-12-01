@@ -1,5 +1,5 @@
 podTemplate(label: 'build', containers: [
-    containerTemplate(name: 'jenkins-test', image: 'docker', command: 'cat', ttyEnabled: true)
+    containerTemplate(name: 'jenkins-test', image: 'docker', command: 'cat', ttyEnabled: true, ports: (containerPort : 8001, name : 'http'))
   ],
   volumes: [
     persistentVolumeClaim(mountPath: '/var/run/docker.sock', claimName: 'jenkins-pvc', readOnly: false),

@@ -25,7 +25,7 @@ git clone https://$user:$pass@github.com/JuanDavidBallesteros/rental_app.git ./a
 az login -u $user1 -p $pass1 '''
           }
           sh '''
-          az acr build --image covapp.azurecr.io/buil_auth:latest \
+          az acr build --image jenkins/buil_auth:latest \
           --registry covapp \
           --file Dockerfile ./app 
   '''

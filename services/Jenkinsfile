@@ -9,7 +9,7 @@ podTemplate(yaml: '''
     resources:
         requests:
         storage: 2Gi
----
+    ---
     apiVersion: v1
     kind: Pod
     spec:

@@ -1,21 +1,9 @@
 podTemplate(label: 'build',
-yaml: '''
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-    name: jenkinspvc
-    spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-        requests:
-        storage: 2Gi
-''',
   containers: [
     containerTemplate(name: 'jenkins-test', image: 'docker', command: 'cat', ttyEnabled: true)
   ],
   volumes: [
-    persistentVolumeClaim(mountPath: '/var/run/docker.sock', claimName: 'jenkinspvc', readOnly: false),
+    persistentVolumeClaim(mountPath: '/var/run/docker.sock', claimName: 'jenkins-pvc', readOnly: false),
   ],
   ) {
   node('build') {

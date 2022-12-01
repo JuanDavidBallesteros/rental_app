@@ -5,6 +5,17 @@ podTemplate(yaml: '''
       containers:
       - name: docker
         image: docker:latest
+        command:
+        - cat
+        args:
+        - 99d
+        volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: db 
+      volumes:
+        - name: db
+          persistentVolumeClaim:
+            claimName: jenkins-pvc
 ''') {
   node(POD_LABEL) {
     stage('Build') {

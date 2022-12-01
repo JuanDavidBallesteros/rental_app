@@ -31,17 +31,4 @@ sh git clone https://$user:$pass@github.com/JuanDavidBallesteros/rental_app.git 
   }
 }
 
-stage ('Transfer release images to registry') {
-       withCredentials([usernamePassword(credentialsId: 'private-artifactory', 
-passwordVariable: 'dockerKey', usernameVariable: 'dockerUser')]) {
-            // avoid using credentials in groovy string interpolation
-            sh label: 'Login to docker registry', script: '''
-docker login --username $dockerUser --password $dockerKey ''' + my-artifactory.intranet
- 
-            // do something while being logged in
-            sh label: 'Logout from docker registry', script: '''
-                docker logout my-artifactory.intranet
-            '''
-    }
-
 

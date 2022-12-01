@@ -14,11 +14,13 @@ podTemplate(yaml: '''
   node(POD_LABEL) {
     stage('Build') {
       
-      container('docker') {
+      container('prepare') {
         stage('Building') {
           sh 'apk update'  
           sh 'apk add git'
-          sh 'git clone https://github.com/JuanDavidBallesteros/rental_app.git .'
+        }
+        git clone 'https://github.com/JuanDavidBallesteros/rental_app.git'
+        stage('build') {
           sh 'docker build -t auth .'
         }
       }

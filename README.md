@@ -1,61 +1,124 @@
-# Southern Code Devops challenge 
-## _We need to deploy our Covachapp!_
+---
 
---------
+PageTitle: Deploying - Distributed System 
+author: "Juan David Ballesteros"
+date: "30/11/2022"
+output: html_document
 
-Covachapp is a web app that allows users to publish housing options for rental, and other users to find those properties.
-As of now, it's in the early development stages and we need someone to help us deploy it in a staging server...
-We sort of know how to use Docker and Docker Compose (barely) but we need help moving all the services and servers to Kubernetes!!
-Currently, we have one Frontend app and three services (Users, Products, and Search), and we need a way to glue them together!
-We also need a lot of help with observability and secret environment variables! You can see we are n00bs in these regards :D
+---
 
-# Current architechture
-- Frontend (Next.js)
-- Auth service (Django)
-    - Auth db (Postgresql)
-- Products service (Fastapi) (Publishes messages to Rabbitmq)
-    - Products db (Postgresql)
-- Search service (golang Mux)
-    - Search db (Mongodb)
-    - Search consumer (Consumes messages from Rabbitmq)
-- RabbitMQ
+# Covachapp Deployment
 
-# Check the link below for a graphic schema
+## What is this document about?
 
-# [Excalidraw schema](https://excalidraw.com/#json=SuEz9hJp7PNMQqwuBYgW8,iGzIvhocOKmqSN3-EyAIXw)
+This repository contains the proposal for the provisioning and deployment of web applications divided into microservices. There are 5 microservices running and 3 databases in the Kubernetes cluster and one in the Cloudamqp service.
 
+![Diagram](./src/drawio.png)
 
-## IMPORTANT:
-clone/upload/fork it to a PRIVATE git repository (Very important that the solution is not public). 
-If it is a private repository, give permission to:
-nicolas.bagatello@southerncode.us
-alexisgiovoglanian@southerncode.us
+The ingress to the services is through an application gateway offered by Azure as an add-on to the AKS cluster, this service is the Azure counterpart to Nginx ingress. Then requests are proxied to the corresponding service by domain name or path. 
 
-## Notes
+Outside the cluster, there is the Cloudamqp for queues service. And the Azure container registry that contains the docker images.
 
-- Make sure the solution is private, not public. Only available for you and us. (OBVIOUSLY, WE KNOW :D)
-- We have created some sample users. You can see the usernames and passwords inside the data/users.json file
-- Be ready to explain why you’re doing things a certain way.
-- Feel free to add more features! We’re curious about what you can think of. We’d expect the same if you worked with us.
-- The 'product' and 'search' services are synched via RabbitMQ, we are using a free [Cloudamqp account](https://www.cloudamqp.com/)
-     IMPORTANT: find and replace YOUR_AMPQ_KEY_URL_GOES_HERE with your credentials after you get your account set up
+## What technologies are used?
 
-## Tasks
+### Provisioning
 
-- Create an account in Cloudampq or deploy a managed version of RabbitMQ
-- Deploy the site with Kubernetes! (locally or in the cloud)
-- Implement a web server (Nginx or similar) for the frontend
-- As of now, the front end needs to know the URLs of each service, and suggest and implement a better way!
+Terraform as provisioning tool for Azure Kubernetes cluster with the application gateway, the other resources are deployed with kubernetes. To automate many commands of Kubernetes we create some Bash scripts that runs Kubectl and Helm.
 
-## Bonus points
+### Cloud Provider
 
--  Creating a CI pipeline, using a tool of your choice, that deploys the webserver to a cloud environment of your choice. (A free account for Microsoft Azure, AWS (Amazon Web Services)
-- Set up a static code analysis tool as a part of the pipeline to use as a quality gate (SonarQube, etc)
-- Suggest any solution to improve monitoring / alerting.
-- Documentation and maintainability is a plus. (Providing a PNG diagram, mermaid diagram, or anything better?)
-- Use a configuration management tool (such as Terraform or Ansible) to bootstrap the server.
-- Load balancing? Suggestions?
-- Think security: Avoid exposing secrets in any way (Tip: use .env file for the composing, and .gitignore it.
-- We have added a postman collection with some basic tests. Add them to the pipeline using Newman!
-- The 'Auth' service has tests, you can run them by calling the "python manage.py test" command. Add them to the pipeline!
-- We want to split this into different repositories, suggest a way of working in distributed repos, and local development without having to deploy every single service!
+We implement the infrastructure in Azure and use the Azure container registry for docker images. 
+
+### Monitoring
+
+For monitoring and alerting we proposed to use Prometheus and Grafana, there are the manifest files to launch these services and start configuring them.
+
+### CI/CD
+
+Finally, we create a Jenkins service to automate and run tests, this service is triggered by the repository hooks.
+
+## Execute
+
+1. Go to the Terraform main file in provisioning/config and run:<br>
+`tf init`<br>
+`tf apply`<br>
+
+2. Check if the cluster is created successfully
+
+3. To configure the cluster, run the deploy bash script:<br>
+`cd deployment`<br>
+`./deployment.sh`<br>
+
+4. I used an external DNS, so you need to update the DNS records to route the requests. I used inverse proxy by hostname and path, so it's mandatory to create the DNS records
+
+5. Access the application
+
+## Challenges
+
+##### Ingress Implementation
+
+The implementation of the Azure ingress was a little tricky because wasn't clear that all backend services need to implement health checks, so first I debugged different parts of the cluster, such as internal DNS, path, and networking. This happened because the proxy showed a 502 error without more explanation, so the community has posted a lot of possible causes.
+
+##### Health checks
+
+Then I face a challenge implementing the health checks in all backend services because some of them are written in languages or frameworks that I don't know. I made research to implement the checks.
+
+##### Volumes claims and class
+
+Finally, another challenge that I face was creating the volume in the Azure cloud, because the claim was okay but the volume wasn't created. So I figured out by reading the documentation that it's necessary to configure readwriteone in the claim because the disk storage needs it.
+
+## Improvements
+
+I found that a health check path is necessary to successfully route the requests made through the application gateway, so I created some endpoints in the services as a liveness probe and readiness probe.
+
+Also, in future versions split the services into different repositories. This does not represent a big change in the CI/CD, because for each service you have to create the hook that triggers the job in Jenkins.
+
+Finally, the last upgrade is to move the authoritative DNS to Azure and implement a logger tool.
+
+## Folder Structure
+
+├── data <br>
+├── deployment (Helm charts)<br>
+│   ├── go-app (Helmchart)<br>
+│   │   ├── charts<br>
+│   │   └── templates<br>
+│   ├── jenkins (Files and values)<br>
+│   ├── launchs (Values for charts)<br>
+│   ├── mongo-db (Helmchart)<br>
+│   ├── monitoring (Repository of Grafana)<br>
+│   ├── next-app (Helmchart)<br>
+│   ├── postgres-db (Helmchart)<br>
+│   ├── python-app (Helmchart)<br>
+│   ├── secrects (envs)<br>
+│   ├── volumesAzure (Volume definition and claim)<br>
+│   └── volumesConfigs (local)<br>
+├── docker<br>
+├── frontend<br>
+├── postman-collection<br>
+├── provisioning (Terraform Folder)<br>
+│   ├── config (Main, here tf init)<br>
+│   └── logic (Module)<br>
+├── services<br>
+│   ├── auth<br>
+│   ├── products<br>
+│   └── search<br>
+└── src (Readme resources)<br>
+
+## Tests
+
+#### Access
+
+![Access the App](./src/Access.png)
+
+#### Login
+
+![Login](./src/Login.png)
+
+#### Product Creation
+
+![Product Creation](./src/ProductCreation.png)
+
+#### Search
+
+![Product Search](./src/ProductSearch.png)
+

@@ -1,9 +1,23 @@
 podTemplate(label: 'build', containers: [
-    containerTemplate(name: 'ubuntu', image: 'ubuntu', command: 'cat', ttyEnabled: true)
-  ]/* ,
+    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
+  ],
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
-  ] */
+  ]
+  ) {
+    node('build') {
+      container('docker') {
+        sh 'docker version'
+      }        
+    }  
+  }
+
+/* podTemplate(label: 'build', containers: [
+    containerTemplate(name: 'ubuntu', image: 'ubuntu', command: 'cat', ttyEnabled: true)
+  ],
+  volumes: [
+    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
+  ]
   ) {
     node('build') {
       container('ubuntu') {
@@ -34,3 +48,4 @@ git clone https://$user:$pass@github.com/JuanDavidBallesteros/rental_app.git ./a
       }        
     }  
   }
+ */

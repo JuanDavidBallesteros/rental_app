@@ -5,7 +5,7 @@ podTemplate(label: 'build', containers: [
     persistentVolumeClaim(mountPath: '/var/run/docker.sock', claimName: 'mongo-db-claim', readOnly: false),
   ]
   ) {
-  node(POD_LABEL) {
+  node('build') {
     stage('Build') {
       container('docker') {
         stage('Building') {

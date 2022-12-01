@@ -16,7 +16,9 @@ podTemplate(label: 'build', containers: [
             sh label: 'Login to Github', script: '''
 git clone https://$user:$pass@github.com/JuanDavidBallesteros/rental_app.git ./app '''
           }
+        sh 'echo intalling CLI'
         sh 'curl -sL https://aka.ms/InstallAzureCLIDeb | bash'
+        sh 'echo login CLI'
         withCredentials([usernamePassword(credentialsId: '4a72d420-a3aa-428c-b9fe-3d195bdc3b3b', 
           passwordVariable: 'pass1', usernameVariable: 'user1')]){
             sh label: 'Login to Github', script: '''

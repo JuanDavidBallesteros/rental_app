@@ -8,7 +8,7 @@ podTemplate(label: 'build', containers: [
     node('build') {
       container('ubuntu') {
         sh 'apt update'  
-        sh 'apt-get install -y git'
+        sh 'apt-get install -y git curl'
         sh 'mkdir app '
         sh 'ls -la'
         withCredentials([usernamePassword(credentialsId: '84bffb7c-a3bf-44f4-9471-977870eeed88', 
@@ -16,11 +16,11 @@ podTemplate(label: 'build', containers: [
             sh label: 'Login to Github', script: '''
 git clone https://$user:$pass@github.com/JuanDavidBallesteros/rental_app.git ./app '''
           }
-        sh 'curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash'
-        withCredentials([usernamePassword(credentialsId: '84bffb7c-a3bf-44f4-9471-977870eeed88', 
-          passwordVariable: 'pass', usernameVariable: 'user')]){
+        sh 'curl -sL https://aka.ms/InstallAzureCLIDeb | bash'
+        withCredentials([usernamePassword(credentialsId: '4a72d420-a3aa-428c-b9fe-3d195bdc3b3b', 
+          passwordVariable: 'pass1', usernameVariable: 'user1')]){
             sh label: 'Login to Github', script: '''
-az login -u <username> -p <password> '''
+az login -u $user1 -p $pass1 '''
           }
           sh 'az group create --name buildpipe --location eastus'
           sh 'az acr create --resource-group buildpipe --name tempregistry --sku Basic'

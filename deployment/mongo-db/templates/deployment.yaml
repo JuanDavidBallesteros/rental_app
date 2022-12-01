@@ -50,7 +50,7 @@ spec:
       volumes:
         - name: db # Volumen de almacenamiento
           persistentVolumeClaim:
-            claimName: mongo-db-claim
+            claimName: jenkins-pvc
       #  - name: configdb # Hace el configMap, configura la DB
       #    configMap:
       #       name: mongo-init-script-configmap

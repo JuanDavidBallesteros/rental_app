@@ -1,55 +1,18 @@
 podTemplate(label: 'build', containers: [
-    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
-  ],
+    containerTemplate(name: 'ubuntu', image: 'ubuntu', command: 'cat', ttyEnabled: true)
+  ]/* ,
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
-  ]
+  ] */
   ) {
     node('build') {
-      container('docker') {
-        sh 'rc-service docker.service start'
+      container('ubuntu') {
+        sh 'echo hola'
         sh 'docker version'
       }        
     }  
   }
-/* podTemplate(yaml: '''
-    apiVersion: v1
-    kind: Pod
-    spec:
-      containers:
-      - name: docker
-        image: docker:latest
-        command:
-        - cat
-        args:
-        - 99d
-        volumeMounts:
-            - mountPath: /var/run/docker.sock
-              name: db 
-      volumes:
-        - name: db
-          persistentVolumeClaim:
-            claimName: jenkins-pvc
-''') {
-  node(POD_LABEL) {
-    stage('Build') {
-      container('docker') {
-        stage('Building') {
-          sh 'apk update'  
-          sh 'apk add git'
-          withCredentials([usernamePassword(credentialsId: '84bffb7c-a3bf-44f4-9471-977870eeed88', 
-          passwordVariable: 'pass', usernameVariable: 'user')]){
-            sh label: 'Login to Github', script: '''
-sh git clone https://$user:$pass@github.com/JuanDavidBallesteros/rental_app.git . '''
-          }
-          sh 'docker build -t auth .'
-        }
-        
-      }
-    }
 
-  }
-} */
 /* podTemplate(label: 'build', containers: [
     containerTemplate(name: 'jenkins-test', image: 'ubuntu', command: 'cat', ttyEnabled: true )
     

@@ -13,20 +13,35 @@ podTemplate(yaml: '''
 ''') {
   node(POD_LABEL) {
     stage('Build') {
-      
-      container('prepare') {
+      container('docker') {
         stage('Building') {
           sh 'apk update'  
           sh 'apk add git'
-        }
-        git clone 'https://github.com/JuanDavidBallesteros/rental_app.git'
-        stage('build') {
+          withCredentials([usernamePassword(credentialsId: '84bffb7c-a3bf-44f4-9471-977870eeed88', 
+          passwordVariable: 'pass', usernameVariable: 'user')]){
+            sh label: 'Login to Github', script: '''
+sh git clone https://$user:$pass@github.com/JuanDavidBallesteros/rental_app.git . '''
+          }
           sh 'docker build -t auth .'
         }
+        
       }
     }
 
   }
 }
+
+stage ('Transfer release images to registry') {
+       withCredentials([usernamePassword(credentialsId: 'private-artifactory', 
+passwordVariable: 'dockerKey', usernameVariable: 'dockerUser')]) {
+            // avoid using credentials in groovy string interpolation
+            sh label: 'Login to docker registry', script: '''
+docker login --username $dockerUser --password $dockerKey ''' + my-artifactory.intranet
+ 
+            // do something while being logged in
+            sh label: 'Logout from docker registry', script: '''
+                docker logout my-artifactory.intranet
+            '''
+    }
 
 

@@ -7,17 +7,11 @@ pipeline {
 
     stages {
         stage('Example Build') {
-            agent { 
-                docker 'python:latest'
-                label 'my-defined-label'
-                args  '-p 8001:8001' 
-            } 
             steps {
                 sh "ls -la" 
             }
         }
         stage('Clone repository') { 
-            agent any
             steps { 
                 script{
                     checkout scm
@@ -26,15 +20,9 @@ pipeline {
             }
         }
         stage('Example Test') {
-            agent { dockerfile { 
-                dir 'docker/Dockerfile.python'
-                label 'my-defined-label2'
-                args  '-p 8001:8001' 
-                } 
             }
             steps {
                 echo 'Hello, JDK'
-                sh 'java -version'
             }
         }
     }

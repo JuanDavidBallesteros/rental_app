@@ -3,7 +3,7 @@
 PageTitle: Deploying - Distributed System 
 author: "Juan David Ballesteros"
 date: "30/11/2022"
-output: html_document
+output: md
 
 ---
 

@@ -1,0 +1,40 @@
+// Declarative //
+pipeline {
+    agent {
+        docker {
+            image 'maven:3-alpine'
+            // label 'my-defined-label'
+            // args  '-v /tmp:/tmp'
+        }
+    }
+    environment { 
+        AN_ACCESS_KEY = credentials('my-prefined-secret-text') 
+    }
+
+    stages {
+        
+        stage('Example Build') {
+            agent { docker 'python:latest' } 
+            steps {
+                ls 
+            }
+        }
+        stage('Clone repository') { 
+            agent { docker 'python:latest' } 
+            steps { 
+                script{
+                    checkout scm
+                }
+                ls
+            }
+        }
+        stage('Example Test') {
+            agent { dockerfile { dir 'docker/Dockerfile.python' } }
+            steps {
+                echo 'Hello, JDK'
+                sh 'java -version'
+            }
+        }
+    }
+}
+

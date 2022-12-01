@@ -1,18 +1,4 @@
 podTemplate(label: 'build', containers: [
-    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
-  ],
-  volumes: [
-    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
-  ]
-  ) {
-    node('build') {
-      container('docker') {
-        sh 'docker version'
-      }        
-    }  
-  }
-
-/* podTemplate(label: 'build', containers: [
     containerTemplate(name: 'ubuntu', image: 'ubuntu', command: 'cat', ttyEnabled: true)
   ],
   volumes: [
@@ -23,20 +9,6 @@ podTemplate(label: 'build', containers: [
       container('ubuntu') {
         sh 'apt update'  
         sh 'apt-get install -y git'
-        sh '''apt-get install -y \
-            ca-certificates \
-            curl \
-            gnupg \
-            lsb-release
-            '''
-        sh 'mkdir -p /etc/apt/keyrings'
-        sh 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg'
-        sh '''echo \
-"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-$(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-'''
-        sh 'apt-get update'
-        sh 'apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin'
         sh 'mkdir app '
         sh 'ls -la'
         withCredentials([usernamePassword(credentialsId: '84bffb7c-a3bf-44f4-9471-977870eeed88', 
@@ -44,8 +16,21 @@ $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
             sh label: 'Login to Github', script: '''
 git clone https://$user:$pass@github.com/JuanDavidBallesteros/rental_app.git ./app '''
           }
-        sh 'docker build -t auth -f ./app ./app'
+        sh 'curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash'
+        withCredentials([usernamePassword(credentialsId: '84bffb7c-a3bf-44f4-9471-977870eeed88', 
+          passwordVariable: 'pass', usernameVariable: 'user')]){
+            sh label: 'Login to Github', script: '''
+az login -u <username> -p <password> '''
+          }
+          sh 'az group create --name buildpipe --location eastus'
+          sh 'az acr create --resource-group buildpipe --name tempregistry --sku Basic'
+          sh '''
+          az acr build --image sample/auth-app:v1 \
+          --registry tempregistry \
+          --file Dockerfile ./app 
+  '''
+          sh "az acr run --registry myContainerRegistry008 --cmd 'tempregistry/sample/hello-world:v1' /dev/null"
       }        
     }  
   }
- */
+ 

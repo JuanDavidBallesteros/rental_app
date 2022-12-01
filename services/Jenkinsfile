@@ -13,26 +13,16 @@ podTemplate(yaml: '''
 ''') {
   node(POD_LABEL) {
     stage('Build') {
-      git 'https://github.com/JuanDavidBallesteros/rental_app.git'
-      container('ubuntu') {
+      
+      container('docker') {
         stage('Building') {
-          sh 'ls'
+          sh 'apk update'  
+          sh 'apk add git'
+          sh 'git clone https://github.com/JuanDavidBallesteros/rental_app.git .'
+          sh 'docker build -t auth .'
         }
       }
     }
-
-    /* stage('Get a Golang project') {
-      git url: 'https://github.com/hashicorp/terraform-provider-google.git', branch: 'main'
-      container('golang') {
-        stage('Build a Go project') {
-          sh '''
-            mkdir -p /go/src/github.com/hashicorp
-            ln -s `pwd` /go/src/github.com/hashicorp/terraform
-            cd /go/src/github.com/hashicorp/terraform && make
-          '''
-        }
-      }
-    } */
 
   }
 }

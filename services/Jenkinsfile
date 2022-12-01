@@ -27,7 +27,7 @@ az login -u $user1 -p $pass1 '''
           sh '''
           az acr build --image jenkins/buil_auth:latest \
           --registry covapp \
-          --file ./app/Dockerfile ./app 
+          --file ./app/Dockerfile ./app/services/auth
   '''
       }        
     }  

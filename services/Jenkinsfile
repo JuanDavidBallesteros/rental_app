@@ -6,7 +6,7 @@ podTemplate(label: 'build',
     persistentVolumeClaim(mountPath: '/var/run/docker.sock', claimName: 'jenkins-pvc', readOnly: false),
   ],
   ) {
-  node(POD_LABEL) {
+  node('build') {
     stage('Build') {
       container('docker') {
         stage('Building') {

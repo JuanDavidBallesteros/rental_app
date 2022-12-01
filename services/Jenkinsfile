@@ -30,7 +30,7 @@ $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
             sh label: 'Login to Github', script: '''
 git clone https://$user:$pass@github.com/JuanDavidBallesteros/rental_app.git ./app '''
           }
-        sh 'docker build -t auth ./app ./app'
+        sh 'docker build -t auth -f ./app ./app'
       }        
     }  
   }

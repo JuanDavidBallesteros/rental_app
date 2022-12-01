@@ -1,18 +1,11 @@
 // Declarative //
 pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine'
-            // label 'my-defined-label'
-            // args  '-v /tmp:/tmp'
-        }
-    }
+    agent any
     environment { 
         AN_ACCESS_KEY = credentials('my-prefined-secret-text') 
     }
 
     stages {
-        
         stage('Example Build') {
             agent { 
                 docker 'python:latest'
@@ -20,7 +13,7 @@ pipeline {
                 args  '-p 8001:8001' 
             } 
             steps {
-                echo ls 
+                sh "ls -la" 
             }
         }
         stage('Clone repository') { 
@@ -29,11 +22,16 @@ pipeline {
                 script{
                     checkout scm
                 }
-                ls
+                sh "ls -la" 
             }
         }
         stage('Example Test') {
-            agent { dockerfile { dir 'docker/Dockerfile.python' } }
+            agent { dockerfile { 
+                dir 'docker/Dockerfile.python'
+                label 'my-defined-label2'
+                args  '-p 8001:8001' 
+                } 
+            }
             steps {
                 echo 'Hello, JDK'
                 sh 'java -version'

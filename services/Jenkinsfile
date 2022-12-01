@@ -1,5 +1,16 @@
 podTemplate(yaml: '''
     apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+    name: jenkins-test
+    spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+        requests:
+        storage: 2Gi
+---
+    apiVersion: v1
     kind: Pod
     spec:
       containers:
@@ -11,7 +22,7 @@ podTemplate(yaml: '''
       volumes:
         - name: db
           persistentVolumeClaim:
-            claimName: mongo-db-claim
+            claimName: jenkins-test
 ''') {
   node(POD_LABEL) {
     stage('Build') {

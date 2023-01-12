@@ -78,8 +78,6 @@ fi
 # helm install <service_name> --values ./launchs/auth_db.yml  ./postgres_db 
 
 #kubectl create secret docker-registry covapp 
-# --docker-server covapp.azurecr.io --docker-username covapp 
-# --docker-password 3162823639Mio. --docker-email c74dcb48-3455-40ae-8ad9-47fe3d48aa4d
 
 #kubectl create secret docker-registry regcred --docker-server=<your-registry-server> --docker-username=<clientId> --docker-password=<your-pword> --docker-email=<your-email>
 
